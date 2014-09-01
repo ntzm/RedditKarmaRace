@@ -1,20 +1,49 @@
 <!doctype html>
 <html class="no-js" lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reddit Karma Race</title>
-    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/foundation.css">
     <script src="js/vendor/modernizr.js"></script>
   </head>
   <body>
     <div class="row">
-      <div class="large-12 columns">
-        <h1>Reddit Karma Race</h1>
-      </div>
+      <h1>Reddit Karma Race</h1>
     </div>
-    
+    <div class="row">
+      <form action="" id="form-main">
+        <div class="row">
+          <div class="large-6 columns user-1">
+            <label>User 1
+              <input type="text" id="user-1-name">
+            </label>
+            <div class="panel">
+              <p>Link karma: <span id="user-1-lkarma"></span></p>
+              <p>Comment karma: <span id="user-1-ckarma"></span></p>
+            </div>
+          </div>
+          <div class="large-6 columns user-2">
+            <label>User 2
+              <input type="text" id="user-2-name">
+            </label>
+            <div class="panel">
+              <p>Link karma: <span id="user-2-lkarma"></span></p>
+              <p>Comment karma: <span id="user-2-ckarma"></span></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label>Amount of karma
+            <input type="number" id="amount">
+          </label>
+        </div>
+        <button class="button" role="button">Go</button>
+      </form>
+    </div>
+
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
