@@ -20,8 +20,8 @@ var updateUserStats = function(el) {
       type: "GET",
       success: function(ret) {
         updatePanel(uid,
-          "<p>Link karma: " + ret.data.link_karma + "</p>" +
-          "<p>Comment karma: " + ret.data.comment_karma + "</p>"
+          "<p><strong>Link karma:</strong> " + ret.data.link_karma + "</p>" +
+          "<p><strong>Comment karma:</strong> " + ret.data.comment_karma + "</p>"
         );
         usernames[aid] = user;
       },

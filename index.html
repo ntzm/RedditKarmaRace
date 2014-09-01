@@ -12,23 +12,39 @@
       <h1>Reddit Karma Race</h1>
     </div>
     <div class="row">
+      <div class="panel">
+        <p>Enter two usernames below and see who can reach their goal the fastest!</p>
+      </div>
+      <hr>
+    </div>
+    <div class="row">
       <form action="" id="form-main">
         <div class="row">
-          <div class="large-6 column" id="user-1">
+          <div class="large-6 columns" id="user-1">
             <label>User 1</label>
-              <input type="text">
+              <input type="text" maxlength="20">
             <div class="panel">Please enter a username above</div>
           </div>
           <div class="large-6 columns" id="user-2">
             <label>User 2</label>
-            <input type="text">
+            <input type="text" maxlength="20">
             <div class="panel">Please enter a username above</div>
           </div>
         </div>
         <div class="row">
-          <label>Amount of karma
-            <input type="number" id="amount">
-          </label>
+          <div class="large-6 columns">
+            <label>Amount of karma to increase by
+              <input type="number" id="amount" value="100">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>
+              <input name="karma-type" type="radio" checked> Link karma
+            </label>
+            <label>
+              <input name="karma-type" type="radio"> Comment karma
+            </label>
+          </div>
         </div>
         <button class="button" role="button">Go</button>
       </form>
