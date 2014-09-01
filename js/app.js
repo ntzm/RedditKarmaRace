@@ -17,7 +17,7 @@ var updateUserStats = function(el) {
     updatePanel(uid, "Loading data...");
     $.ajax({
       url: "http://www.reddit.com/user/" + user + "/about.json",
-      type: "GET",
+      type: "get",
       success: function(ret) {
         updatePanel(uid,
           "<p><strong>Link karma:</strong> " + ret.data.link_karma + "</p>" +
@@ -38,6 +38,29 @@ var updateUserStats = function(el) {
 
 $("#form-main").submit(function(e) {
   e.preventDefault();
+
+  var user1 = $("#user-1 > input").val(),
+    user2   = $("#user-2 > input").val(),
+    amount  = $("#amount").val(),
+    type    = "lkarma";
+
+  if ($("#ckarma").prop("checked")) {
+    type = "ckarma";
+  }
+
+  $.ajax({
+    url: "submit/",
+    type: "post",
+    data: {
+      user1:  user1,
+      user2:  user2,
+      amount: amount,
+      type:   type
+    },
+    success: function(ret) {
+      console.log(ret);
+    }
+  });
 });
 
 $("#user-1 > input, #user-2 > input")
