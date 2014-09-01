@@ -1,21 +1,30 @@
+var updatePanel = function(uid, val) {
+  $("#user-" + uid + " > .panel").html(val);
+}
+
 $(document).ready(function() {
   $("#form-main").submit(function(e) {
     e.preventDefault();
   });
-  $("#user-1-name, #user-2-name").blur(function() {
+  $("#user-1 > input, #user-2 > input").blur(function() {
     var user = $(this).val(),
-      uid = $(this).attr("id").replace(/[^0-9]/g,'');
+      // RegExp to extract the number from the id
+      uid = $(this).parent().attr("id").slice(-1);
+
+    updatePanel(uid, "Loading...");
+
     $.ajax({
       url: "http://www.reddit.com/user/" + user + "/about.json",
       type: "GET",
-      dataType: "json",
       success: function(ret) {
-        $("#user-" + uid + "-lkarma").html(ret.data.link_karma);
-        $("#user-" + uid + "-ckarma").html(ret.data.comment_karma);
+        updatePanel(uid,
+          "<p>Link karma: " + ret.data.link_karma + "</p>" +
+          "<p>Comment karma: " + ret.data.comment_karma + "</p>"
+        );
       },
       error: function(jqXHR) {
         if(jqXHR.status === 404) {
-          console.log("User does not exist");
+          updatePanel(uid, "User does not exist");
         }
       }
     });
