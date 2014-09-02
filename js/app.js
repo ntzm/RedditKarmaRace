@@ -16,7 +16,7 @@ var updateUserStats = function(el) {
   if (usernames[aid] !== user) {
     updatePanel(uid, "Loading data...");
     $.ajax({
-      url: "http://www.reddit.com/user/" + user + "/about.json",
+      url:  "http://www.reddit.com/user/" + user + "/about.json",
       type: "get",
       success: function(ret) {
         updatePanel(uid,
@@ -61,19 +61,19 @@ $("#form-main").submit(function(e) {
     success: function(ret) {
       switch (ret) {
         case "user 1 404":
-          // Code
+          $("#message").html("User 1 does not exist");
           break;
         case "user 2 404":
-          // Code
+          $("#message").html("User 2 does not exist");
           break;
         case "amount non numeric":
-          // Code
+          $("#message").html("The karma amount is not numeric");
           break;
         case "amount too high":
-          // Code
+          $("#message").html("The karma amount is too high");
           break;
         default:
-          console.log(ret);
+          $("#message").html("<a href='race?id=" + ret +"'>View race</a>");
       }
     }
   });
