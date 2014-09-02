@@ -22,13 +22,15 @@ function getUserData($username) {
   ];
 }
 
+define("IN_APPLICATION", 1);
+
 /**
  * As the dbconnect.php file is not included in the git repo, this warns the
  * developer that a dbconnect.php file must be created.
  */
-if (file_exists("dbconnect.php")) {
+if (file_exists("../dbconnect.php")) {
 
-  include "dbconnect.php";
+  include "../dbconnect.php";
 
   // TODO: Add isset() validation
 
