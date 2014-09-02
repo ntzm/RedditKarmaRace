@@ -75,7 +75,7 @@ $("#form-main").submit(function(e) {
           changeMsg("The karma amount is too high");
           break;
         default:
-          changeMsg("<a href='race?id=" + ret +"'>View race</a>");
+          changeMsg("<a href='race/?id=" + ret +"'>View race</a>");
       }
     }
   });

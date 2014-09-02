@@ -9,6 +9,8 @@
  * @author Nat Zimmermann <nat@natzim.com>
  */
 
+define("IN_APPLICATION", 1);
+
 /**
  * Retrieves user data from reddit's API
  * @param  string $username A reddit username
@@ -21,8 +23,6 @@ function getUserData($username) {
     "exists" => $http_response_header[0] === "HTTP/1.1 200 OK"
   ];
 }
-
-define("IN_APPLICATION", 1);
 
 /**
  * As the dbconnect.php file is not included in the git repo, this warns the
@@ -61,10 +61,12 @@ if (file_exists("../dbconnect.php")) {
     // TODO: Find a better way of doing this
 
     $userData = [
-      $tempUserData[0]["data"]["data"]["name"] => [
+      "user1" => [
+        "name"  => $tempUserData[0]["data"]["data"]["name"],
         "karma" => $tempUserData[0]["data"]["data"][$type . "_karma"]
       ],
-      $tempUserData[1]["data"]["data"]["name"] => [
+      "user2" => [
+        "name"  => $tempUserData[1]["data"]["data"]["name"],
         "karma" => $tempUserData[1]["data"]["data"][$type . "_karma"]
       ]
     ];
