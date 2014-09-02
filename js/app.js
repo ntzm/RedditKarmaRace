@@ -8,6 +8,10 @@ var updatePanel = function(uid, val) {
   $("#user-" + uid + " > .panel").html(val);
 }
 
+var changeMsg = function(val) {
+  $("#message").html(val);
+}
+
 var updateUserStats = function(el) {
   var user = el.val(),
       uid  = el.parent().attr("id").slice(-1),
@@ -43,11 +47,9 @@ $("#form-main").submit(function(e) {
       user2  = $("#user-2 > input").val(),
       amount = $("#amount").val();
 
-  if ($("#ckarma").prop("checked")) {
-    var type = "comment";
-  } else {
-    var type = "link";
-  }
+  var type = $("#ckarma").prop("checked") ? "comment" : "link";
+
+  changeMsg("");
 
   $.ajax({
     url: "submit/",
@@ -61,19 +63,19 @@ $("#form-main").submit(function(e) {
     success: function(ret) {
       switch (ret) {
         case "user 1 404":
-          $("#message").html("User 1 does not exist");
+          changeMsg("User 1 does not exist");
           break;
         case "user 2 404":
-          $("#message").html("User 2 does not exist");
+          changeMsg("User 2 does not exist");
           break;
         case "amount non numeric":
-          $("#message").html("The karma amount is not numeric");
+          changeMsg("The karma amount is not numeric");
           break;
         case "amount too high":
-          $("#message").html("The karma amount is too high");
+          changeMsg("The karma amount is too high");
           break;
         default:
-          $("#message").html("<a href='race?id=" + ret +"'>View race</a>");
+          changeMsg("<a href='race?id=" + ret +"'>View race</a>");
       }
     }
   });
