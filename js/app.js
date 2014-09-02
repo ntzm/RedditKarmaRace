@@ -42,10 +42,10 @@ $("#form-main").submit(function(e) {
   var user1 = $("#user-1 > input").val(),
     user2   = $("#user-2 > input").val(),
     amount  = $("#amount").val(),
-    type    = "lkarma";
+    type    = 1;
 
   if ($("#ckarma").prop("checked")) {
-    type = "ckarma";
+    type = 2;
   }
 
   $.ajax({
@@ -58,7 +58,22 @@ $("#form-main").submit(function(e) {
       type:   type
     },
     success: function(ret) {
-      console.log(ret);
+      switch (ret) {
+        case "user 1 404":
+          // Code
+          break;
+        case "user 2 404":
+          // Code
+          break;
+        case "amount non numeric":
+          // Code
+          break;
+        case "amount too high":
+          // Code
+          break;
+        default:
+          // Code
+      }
     }
   });
 });
