@@ -10,8 +10,8 @@ var updatePanel = function(uid, val) {
 
 var updateUserStats = function(el) {
   var user = el.val(),
-    uid = el.parent().attr("id").slice(-1),
-    aid = parseInt(uid, 10) - 1;
+      uid  = el.parent().attr("id").slice(-1),
+      aid  = parseInt(uid, 10) - 1;
 
   if (usernames[aid] !== user) {
     updatePanel(uid, "Loading data...");
@@ -39,13 +39,14 @@ var updateUserStats = function(el) {
 $("#form-main").submit(function(e) {
   e.preventDefault();
 
-  var user1 = $("#user-1 > input").val(),
-    user2   = $("#user-2 > input").val(),
-    amount  = $("#amount").val(),
-    type    = 1;
+  var user1  = $("#user-1 > input").val(),
+      user2  = $("#user-2 > input").val(),
+      amount = $("#amount").val();
 
   if ($("#ckarma").prop("checked")) {
-    type = 2;
+    var type = "comment";
+  } else {
+    var type = "link";
   }
 
   $.ajax({
@@ -72,7 +73,7 @@ $("#form-main").submit(function(e) {
           // Code
           break;
         default:
-          // Code
+          console.log(ret);
       }
     }
   });

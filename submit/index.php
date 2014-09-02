@@ -10,14 +10,16 @@
  */
 
 /**
- * Check user exists
- * @param  string  $user A username
- * @return boolean       Returns true if user exists
+ * Retrieves user data from reddit's API
+ * @param  string $username A reddit username
+ * @return array            Whether the user exists and the user data
  */
-function userExists($user) {
-  $url = "http://www.reddit.com/user/" . $user . "/about.json";
-  $headers = get_headers($url, 1);
-  return $headers[0] === "HTTP/1.1 200 OK";
+function getUserData($username) {
+  $url = "http://www.reddit.com/user/" . $username . "/about.json";
+  return [
+    "data" => json_decode(file_get_contents($url), true),
+    "exists" => $http_response_header[0] === "HTTP/1.1 200 OK"
+  ];
 }
 
 /**
@@ -28,18 +30,25 @@ if (file_exists("dbconnect.php")) {
 
   include "dbconnect.php";
 
-  $user1  = $_POST["user1"];
-  $user2  = $_POST["user2"];
+  // TODO: Add isset() validation
+
   $amount = $_POST["amount"];
   $type   = $_POST["type"];
 
-  if ($type !== 1 || $type !== 2) {
-    $type = 1;
-  }
+  // if ($type !== "link" || $type !== "comment") {
+  //   $type = "link";
+  // }
   
-  if (!userExists($user1)) {
+  // TODO: Find a better way of doing this
+
+  $tempUserData = [
+    getUserData($_POST["user1"]),
+    getUserData($_POST["user2"])
+  ];
+  
+  if (!$tempUserData[0]["exists"]) {
     echo "user 1 404";
-  } elseif (!userExists($user2)) {
+  } elseif (!$tempUserData[0]["exists"]) {
     echo "user 2 404";
   } elseif (!is_numeric($amount)) {
     echo "amount non numeric";
@@ -47,19 +56,28 @@ if (file_exists("dbconnect.php")) {
     echo "amount too high";
   } else {
 
+    // TODO: Find a better way of doing this
+
+    $userData = [
+      $tempUserData[0]["data"]["data"]["name"] => [
+        "karma" => $tempUserData[0]["data"]["data"][$type . "_karma"]
+      ],
+      $tempUserData[1]["data"]["data"]["name"] => [
+        "karma" => $tempUserData[1]["data"]["data"][$type . "_karma"]
+      ]
+    ];
+
     $stmt = $db->prepare(
       "INSERT INTO races (
-        user1,
-        user2,
+        userData,
         amount,
         type
-      ) VALUES (?, ?, ?, ?)"
+      ) VALUES (?, ?, ?)"
     );
 
     $stmt->execute(
       array(
-        $user1,
-        $user2,
+        serialize($userData),
         $amount,
         $type
       )
