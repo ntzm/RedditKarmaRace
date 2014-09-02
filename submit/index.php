@@ -17,7 +17,7 @@
 function getUserData($username) {
   $url = "http://www.reddit.com/user/" . $username . "/about.json";
   return [
-    "data" => json_decode(file_get_contents($url), true),
+    "data"   => json_decode(@file_get_contents($url), true),
     "exists" => $http_response_header[0] === "HTTP/1.1 200 OK"
   ];
 }
