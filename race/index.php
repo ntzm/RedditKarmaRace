@@ -68,7 +68,7 @@ if (file_exists("../dbconnect.php")) {
       $result["type"]
     );
     $userData["user" . $i]["progress"] = floor(
-      ($userData["user1"]["curkarma"] - $userData["user1"]["karma"]) /
+      ($userData["user" . $i]["curkarma"] - $userData["user" . $i]["karma"]) /
       $result["amount"] * 100
     );
 
