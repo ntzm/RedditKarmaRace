@@ -36,56 +36,47 @@ function getKarma($user, $type) {
 
 $id = $_GET["id"];
 
-/**
- * As the dbconnect.php file is not included in the git repo, this warns the
- * developer that a dbconnect.php file must be created.
- */
-if (file_exists("../dbconnect.php")) {
-  include "../dbconnect.php";
+include "../php/dbconnect.php";
 
-  $stmt = $db->prepare(
-      "SELECT * FROM races WHERE id=?"
-    );
-
-  $stmt->execute(
-    array(
-      $id
-    )
+$stmt = $db->prepare(
+    "SELECT * FROM races WHERE id=?"
   );
 
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt->execute(
+  array(
+    $id
+  )
+);
 
-  $userData = unserialize($result["userData"]);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  echo "<h1>" . $userData["user1"]["name"] . " vs " .
-    $userData["user2"]["name"] . "</h1>" .
-  "<p>First to increase their " . $result["type"] . " karma by " .
-    $result["amount"] . "</p>";
+$userData = unserialize($result["userData"]);
 
-  for ($i = 1; $i < 3; $i++) {
-    $userData["user" . $i]["curkarma"] = getKarma(
-      $userData["user" . $i]["name"],
-      $result["type"]
-    );
-    $userData["user" . $i]["progress"] = floor(
-      ($userData["user" . $i]["curkarma"] - $userData["user" . $i]["karma"]) /
-      $result["amount"] * 100
-    );
+echo "<h1>" . $userData["user1"]["name"] . " vs " .
+  $userData["user2"]["name"] . "</h1>" .
+"<p>First to increase their " . $result["type"] . " karma by " .
+  $result["amount"] . "</p>";
 
-    $data = $userData["user" . $i];
+for ($i = 1; $i < 3; $i++) {
+  $userData["user" . $i]["curkarma"] = getKarma(
+    $userData["user" . $i]["name"],
+    $result["type"]
+  );
+  $userData["user" . $i]["progress"] = floor(
+    ($userData["user" . $i]["curkarma"] - $userData["user" . $i]["karma"]) /
+    $result["amount"] * 100
+  );
 
-    echo "<h3>" . $data["name"] . "</h3>" .
-    "<div class='row'>" .
-      "<div class='left'>" . $data["karma"] . "</div>" . 
-      "<div class='right'>" . ($data["karma"] + $result["amount"]) . "</div>" . 
-    "</div>" .
-    "<div class='progress'>" .
-      "<span class='meter' style='width:" . $data["progress"] . "%'></span>" .
-    "</div>";
-  }
+  $data = $userData["user" . $i];
 
-} else {
-  echo "Whoops! You need to make your own dbconnect.php file!";
+  echo "<h3>" . $data["name"] . "</h3>" .
+  "<div class='row'>" .
+    "<div class='left'>" . $data["karma"] . "</div>" . 
+    "<div class='right'>" . ($data["karma"] + $result["amount"]) . "</div>" . 
+  "</div>" .
+  "<div class='progress'>" .
+    "<span class='meter' style='width:" . $data["progress"] . "%'></span>" .
+  "</div>";
 }
 ?>
     </div>
