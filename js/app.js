@@ -74,6 +74,9 @@ $("#form-main").submit(function(e) {
         case "amount too high":
           changeMsg("The karma amount is too high");
           break;
+        case "amount too low":
+          changeMsg("The karma amount is too low");
+          break;
         default:
           changeMsg("<a href='race/?id=" + ret +"'>View race</a>");
       }

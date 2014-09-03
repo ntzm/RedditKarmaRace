@@ -31,11 +31,9 @@ if (isset($_POST["user1"], $_POST["user2"], $_POST["amount"], $_POST["type"])) {
   $amount = $_POST["amount"];
   $type   = $_POST["type"];
 
-  // if ($type !== "link" || $type !== "comment") {
-  //   $type = "link";
-  // }
-
-  // TODO: Find a better way of doing this
+   if ($type !== "link" && $type !== "comment") {
+     $type = "link";
+  }
 
   $tempUserData = [
     getUserData($_POST["user1"]),
@@ -50,9 +48,9 @@ if (isset($_POST["user1"], $_POST["user2"], $_POST["amount"], $_POST["type"])) {
     echo "amount non numeric";
   } elseif (strlen($amount) > 10) {
     echo "amount too high";
+  } elseif ($amount < 1) {
+    echo "amount too low";
   } else {
-
-    // TODO: Find a better way of doing this
 
     $userData = [
       "user1" => [
