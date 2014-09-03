@@ -20,9 +20,18 @@
 
 define("IN_APPLICATION", 1);
 
+/**
+ * Retrieves and returns a users karma
+ * @param  string $user A reddit username
+ * @param  string $type The karma type (link|comment)
+ * @return string       The amount of karma
+ */
 function getKarma($user, $type) {
-  $thing = json_decode(file_get_contents("http://www.reddit.com/user/" . $user . "/about.json"), true);
-  return $thing["data"][$type . "_karma"];
+  $tempUserData = json_decode(
+    file_get_contents("http://www.reddit.com/user/" . $user . "/about.json"),
+    true
+  );
+  return $tempUserData["data"][$type . "_karma"];
 }
 
 $id = $_GET["id"];
@@ -48,22 +57,32 @@ if (file_exists("../dbconnect.php")) {
 
   $userData = unserialize($result["userData"]);
 
-  $userData["user1"]["curkarma"] = getKarma($userData["user1"]["name"], $result["type"]);
-  $userData["user2"]["curkarma"] = getKarma($userData["user2"]["name"], $result["type"]);
+  echo "<h1>" . $userData["user1"]["name"] . " vs " .
+    $userData["user2"]["name"] . "</h1>" .
+  "<p>First to increase their " . $result["type"] . " karma by " .
+    $result["amount"] . "</p>";
 
-  // Super messy code goes here
+  for ($i = 1; $i < 3; $i++) {
+    $userData["user" . $i]["curkarma"] = getKarma(
+      $userData["user" . $i]["name"],
+      $result["type"]
+    );
+    $userData["user" . $i]["progress"] = floor(
+      ($userData["user1"]["curkarma"] - $userData["user1"]["karma"]) /
+      $result["amount"] * 100
+    );
 
-  echo "<h1>" . $userData["user1"]["name"] . " vs " . $userData["user2"]["name"] . "</h1>";
+    $data = $userData["user" . $i];
 
-  echo "<p>First to increase their " . $result["type"] . " karma by " . $result["amount"] . "</p>";
-
-  echo "<h3>" . $userData["user1"]["name"] . "</h3>";
-  echo "<div class='row'><div class='left'>" . $userData["user1"]["karma"] . "</div><div class='right'>" . ($userData["user1"]["karma"] + $result["amount"]) . "</div></div>";
-  echo "<div class='progress'><span class='meter' style='width:" . floor(($userData["user1"]["curkarma"] - $userData["user1"]["karma"]) / $result["amount"] * 100) . "%'></span></div>";
-
-  echo "<h3>" . $userData["user2"]["name"] . "</h3>";
-  echo "<div class='row'><div class='left'>" . $userData["user2"]["karma"] . "</div><div class='right'>" . ($userData["user2"]["karma"] + $result["amount"]) . "</div></div>";
-  echo "<div class='progress'><span class='meter' style='width:" . floor(($userData["user2"]["curkarma"] - $userData["user2"]["karma"]) / $result["amount"] * 100) . "%'></span></div>";
+    echo "<h3>" . $data["name"] . "</h3>" .
+    "<div class='row'>" .
+      "<div class='left'>" . $data["karma"] . "</div>" . 
+      "<div class='right'>" . ($data["karma"] + $result["amount"]) . "</div>" . 
+    "</div>" .
+    "<div class='progress'>" .
+      "<span class='meter' style='width:" . $data["progress"] . "%'></span>" .
+    "</div>";
+  }
 
 } else {
   echo "Whoops! You need to make your own dbconnect.php file!";
