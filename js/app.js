@@ -53,15 +53,29 @@ $("#form-main").submit(function(e) {
 
   var user1  = $("#user-1 > input").val(),
       user2  = $("#user-2 > input").val(),
-      amount = $("#amount > input").val();
+      amount = $("#amount > input").val(),
+      valid  = true;
 
   var type = $("#ckarma").prop("checked") ? "comment" : "link";
 
   clearErrors();
 
-  if (amount % 1 !== 0) {
+  if (amount % 1 !== 0 || amount === "") {
     addError("amount", "Invalid number!");
-  } else {
+    valid = false;
+  }
+  if (user1 === "") {
+    addError("user-1", "Required!");
+    valid = false;
+  }
+  if (user2 === "") {
+    addError("user-2", "Required!");
+    valid = false;
+  }
+
+  if (valid) {
+
+    $("#user-1 > input, #user-2 > input, #amount > input, .button").prop("disabled", true);
 
     $.ajax({
       url: "submit/",
@@ -90,8 +104,9 @@ $("#form-main").submit(function(e) {
             addError("amount", "Too low!");
             break;
           default:
-            $("#message").html("<a href='race/?id=" + ret +"'>View race</a>");
+            window.location.replace("race/?id=" + ret);
         }
+        $("#user-1 > input, #user-2 > input, #amount > input, .button").prop("disabled", false);
       }
     });
   }
