@@ -8,10 +8,6 @@ var updatePanel = function(uid, val) {
   $("#user-" + uid + " > .panel").html(val);
 }
 
-var changeMsg = function(val) {
-  $("#message").html(val);
-}
-
 var updateUserStats = function(el) {
   var user = el.val(),
       uid  = el.parent().attr("id").slice(-1),
@@ -30,12 +26,24 @@ var updateUserStats = function(el) {
         usernames[aid] = user;
       },
       error: function(jqXHR) {
-        if(jqXHR.status === 404) {
-          updatePanel(uid, "Whoops! User does not exist!");
-        }
+        updatePanel(uid, "Cannot retrieve user information!");
       }
     });
   } 
+}
+
+var addError = function(el, message) {
+  $("#" + el).addClass("error");
+  $("#" + el + " > small")
+    .addClass("error")
+    .html(message);
+}
+
+var clearErrors = function() {
+  $("#user-1, #user-2, #amount").removeClass("error");
+  $("#user-1 > small, #user-2 > small, #amount > small")
+    .removeClass("error")
+    .html("");
 }
 
 // Events
@@ -45,43 +53,48 @@ $("#form-main").submit(function(e) {
 
   var user1  = $("#user-1 > input").val(),
       user2  = $("#user-2 > input").val(),
-      amount = $("#amount").val();
+      amount = $("#amount > input").val();
 
   var type = $("#ckarma").prop("checked") ? "comment" : "link";
 
-  changeMsg("");
+  clearErrors();
 
-  $.ajax({
-    url: "submit/",
-    type: "post",
-    data: {
-      user1:  user1,
-      user2:  user2,
-      amount: amount,
-      type:   type
-    },
-    success: function(ret) {
-      switch (ret) {
-        case "user 1 404":
-          changeMsg("User 1 does not exist");
-          break;
-        case "user 2 404":
-          changeMsg("User 2 does not exist");
-          break;
-        case "amount non numeric":
-          changeMsg("The karma amount is not numeric");
-          break;
-        case "amount too high":
-          changeMsg("The karma amount is too high");
-          break;
-        case "amount too low":
-          changeMsg("The karma amount is too low");
-          break;
-        default:
-          changeMsg("<a href='race/?id=" + ret +"'>View race</a>");
+  if (amount % 1 !== 0) {
+    addError("amount", "Invalid number!");
+  } else {
+
+    $.ajax({
+      url: "submit/",
+      type: "post",
+      data: {
+        user1:  user1,
+        user2:  user2,
+        amount: amount,
+        type:   type
+      },
+      success: function(ret) {
+        switch (ret) {
+          case "user 1 404":
+            addError("user-1", "User does not exist!");
+            break;
+          case "user 2 404":
+            addError("user-2", "User does not exist!");
+            break;
+          case "amount non numeric":
+            addError("amount", "Invalid number!");
+            break;
+          case "amount too high":
+            addError("amount", "Too high!");
+            break;
+          case "amount too low":
+            addError("amount", "Too low!");
+            break;
+          default:
+            $("#message").html("<a href='race/?id=" + ret +"'>View race</a>");
+        }
       }
-    }
-  });
+    });
+  }
 });
 
 $("#user-1 > input, #user-2 > input")
@@ -89,7 +102,6 @@ $("#user-1 > input, #user-2 > input")
     updateUserStats($(this));
   })
   .keyup(function(e) {
-    // If the enter key is pressed while the focus is on one of the inputs
     if (e.keyCode === 13) {
       updateUserStats($(this));
     }
