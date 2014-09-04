@@ -9,9 +9,12 @@
     <script src="../js/vendor/modernizr.js"></script>
   </head>
   <body>
-    <h1></h1>
-    <p id="info"></p>
-    <div id="users"></div>
+    <div class="row">
+      <h1></h1>
+      <p id="info"></p>
+      <div id="users"></div>
+    </div>
+
     <script src="../js/vendor/jquery.js"></script>
     <script src="../js/vendor/foundation.min.js"></script>
     <script src="../js/race.js"></script>
