@@ -75,7 +75,7 @@ $("#form-main").submit(function(e) {
 
   if (valid) {
 
-    $("#user-1 > input, #user-2 > input, #amount > input, .button").prop("disabled", true);
+    $(".button").prop("disabled", true);
 
     $.ajax({
       url: "submit/",
@@ -87,6 +87,7 @@ $("#form-main").submit(function(e) {
         type:   type
       },
       success: function(ret) {
+        $(".button").prop("disabled", false);
         switch (ret) {
           case "user 1 404":
             addError("user-1", "User does not exist!");
@@ -104,9 +105,9 @@ $("#form-main").submit(function(e) {
             addError("amount", "Too low!");
             break;
           default:
+          $(".button").prop("disabled", true);
             window.location.replace("race/?id=" + ret);
         }
-        $("#user-1 > input, #user-2 > input, #amount > input, .button").prop("disabled", false);
       }
     });
   }
