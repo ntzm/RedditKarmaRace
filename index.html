@@ -10,7 +10,7 @@
   </head>
   <body>
     <div class="row">
-      <h1>Reddit Karma Race</h1>
+      <h1 class="text-center">Reddit Karma Race</h1>
     </div>
     <div class="row">
       <div class="panel">
@@ -22,22 +22,25 @@
       <form action="" id="form-main">
         <div class="row">
           <div class="large-6 columns" id="user-1">
-            <label>User 1</label>
-            <input type="text" maxlength="20">
+            <label>User 1
+              <input type="text" maxlength="20">
+            </label>
             <small></small>
-            <div class="panel">Please enter a username above</div>
+            <div class="panel hide"></div>
           </div>
           <div class="large-6 columns" id="user-2">
-            <label>User 2</label>
-            <input type="text" maxlength="20">
+            <label>User 2
+              <input type="text" maxlength="20">
+            </label>
             <small></small>
-            <div class="panel">Please enter a username above</div>
+            <div class="panel hide"></div>
           </div>
         </div>
         <div class="row">
           <div class="large-6 columns" id="amount">
-            <label>Amount of karma to increase by</label>
-            <input type="number" value="100" maxlength="10">
+            <label>Amount of karma to increase by
+              <input type="number" value="100" maxlength="10">
+            </label>
             <small></small>
           </div>
           <div class="large-6 columns">
@@ -49,7 +52,7 @@
             </label>
           </div>
         </div>
-        <button class="button" role="button">Go</button>
+        <button class="button expand" role="button">Go</button>
         <div id="message"></div>
       </form>
     </div>

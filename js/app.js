@@ -5,12 +5,16 @@ var usernames = ["", ""];
 // Functions
 
 var updatePanel = function(uid, val) {
-  $("#user-" + uid + " > .panel").html(val);
+  var $panel = $("#user-" + uid + " > .panel");
+  if ($panel.hasClass("hide")) {
+    $panel.slideDown("fast");
+  }
+  $panel.html(val);
 }
 
 var updateUserStats = function(el) {
   var user = el.val(),
-      uid  = el.parent().attr("id").slice(-1),
+      uid  = el.parent().parent().attr("id").slice(-1),
       aid  = parseInt(uid, 10) - 1;
 
   if (usernames[aid] !== user) {
@@ -51,9 +55,9 @@ var clearErrors = function() {
 $("#form-main").submit(function(e) {
   e.preventDefault();
 
-  var user1  = $("#user-1 > input").val(),
-      user2  = $("#user-2 > input").val(),
-      amount = $("#amount > input").val(),
+  var user1  = $("#user-1 > label > input").val(),
+      user2  = $("#user-2 > label > input").val(),
+      amount = $("#amount > label > input").val(),
       valid  = true;
 
   var type = $("#ckarma").prop("checked") ? "comment" : "link";
@@ -113,7 +117,7 @@ $("#form-main").submit(function(e) {
   }
 });
 
-$("#user-1 > input, #user-2 > input")
+$("#user-1 > label > input, #user-2 > label > input")
   .blur(function() {
     updateUserStats($(this));
   })
