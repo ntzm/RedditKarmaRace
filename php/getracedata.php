@@ -9,14 +9,19 @@
 
 define("IN_APPLICATION", 1);
 
-$id = $_POST["id"];
+isset($_POST["id"]) or die("Not allowed");
 
 include "dbconnect.php";
 
 $stmt = $db->prepare("SELECT * FROM races WHERE id=?");
-$stmt->execute(array($id));
+$stmt->execute(array($_POST["id"]));
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-$result["userData"] = unserialize($result["userData"]);
 
-echo json_encode($result);
+if ($result["userData"]) {
+  $result["userData"] = unserialize($result["userData"]);
+  
+  echo json_encode($result);
+} else {
+  echo false;
+}
 ?>
