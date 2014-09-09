@@ -169,6 +169,7 @@ $(document).ready(function() {
                 var progress = (ret.data[raceData.type + "_karma"] -
                   this.user.karma) / raceData.amount * 100 + "%";
                 $("#user" + this.i + " > .progress > .meter").css("width", progress);
+                $("#user" + this.i + " > h3").html(this.user.name + " - " + ret.data[raceData.type + "_karma"]);
               }
             });
           }
